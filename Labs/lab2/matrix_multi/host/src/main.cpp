@@ -81,6 +81,16 @@ static float B[24] = {
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
+  
+static float C[8] = {
+  1.0f,  1.0f,  1.0f,  0.0f,
+  1.0f,  1.0f,  1.0f,  0.0f};   
+}
+
+static float D[8] = {
+  1.0f,  1.0f,  1.0f,  1.0f,
+  1.0f,  1.0f,  1.0f,  1.0f};   
+}
 
 // declare matrix sizes
 static size_t wA=4;
@@ -89,6 +99,8 @@ static size_t wB=6;
 static size_t hB=4;
 static size_t wC = wB;
 static size_t hC = hA;
+static size_t wD = wB;
+static size_t hD = hA;
 
 // Entry point.
 int main(int argc, char **argv) {
@@ -107,9 +119,9 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-  float *C = (float *)calloc (hC * wC ,  sizeof(float));
-  for (int i = 0; i < wC*hC; i++) {
-    printf ("%f ", C[i]);
+  float *D = (float *)calloc (hD * wD ,  sizeof(float));
+  for (int i = 0; i < wD*hD; i++) {
+    printf ("%f ", D[i]);
   }
   printf("\n");
 
@@ -133,24 +145,25 @@ int main(int argc, char **argv) {
           wB*hB*sizeof(float), (void *)B, 0, NULL, NULL);
 
   // allocate space for Matrix C on the device 
-  cl_mem bufferC = clCreateBuffer(context, CL_MEM_WRITE_ONLY,
-          wC*hC*sizeof(float), NULL, &ret);
+  cl_mem bufferD = clCreateBuffer(context, CL_MEM_WRITE_ONLY,
+          wD*hD*sizeof(float), NULL, &ret);
 
   // Set the kernel arguments 
-  status = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&bufferC);
+  status = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&bufferD);
   status = clSetKernelArg(kernel, 1, sizeof(cl_int), (void *)&wA);
   status = clSetKernelArg(kernel, 2, sizeof(cl_int), (void *)&hA);
   status = clSetKernelArg(kernel, 3, sizeof(cl_int), (void *)&wB);
   status = clSetKernelArg(kernel, 4, sizeof(cl_int), (void *)&hB);
   status = clSetKernelArg(kernel, 5, sizeof(cl_mem), (void *)&bufferA);
   status = clSetKernelArg(kernel, 6, sizeof(cl_mem), (void *)&bufferB);
+  status = clSetKernelArg(kernel, 7, sizeof(cl_mem), (void *)&bufferC);
   checkError(status, "Failed to set kernel arg ");
 
   printf("\nKernel initialization is complete.\n");
   printf("Launching the kernel...\n\n");
 
   // Configure work set over which the kernel will execute
-  size_t globalws[2]={wC, hC};
+  size_t globalws[2]={wD, hD};
   size_t localws[2] = {2, 2};
   // Execute the kernel 
   status = clEnqueueNDRangeKernel(queue, kernel, 2, NULL,
@@ -165,12 +178,12 @@ int main(int argc, char **argv) {
   printf("\nKernel execution is complete.\n");
 
   // Copy the output data back to the host 
-  clEnqueueReadBuffer(queue, bufferC, CL_TRUE, 0, wC*hC*sizeof(float),
-         (void *)C, 0, NULL, NULL);
+  clEnqueueReadBuffer(queue, bufferD, CL_TRUE, 0, wD*hD*sizeof(float),
+         (void *)D, 0, NULL, NULL);
 
   // Verify result 
-  for (int i = 0; i < wC*hC; i++) {
-    printf ("%f ", C[i]);
+  for (int i = 0; i < wD*hD; i++) {
+    printf ("%f ", D[i]);
   }
   printf("\n");
 
