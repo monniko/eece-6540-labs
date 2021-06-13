@@ -43,7 +43,7 @@ __kernel void simpleMultiply(
     for (int i=0; i<widthA; i++) {
         sum += inputA[row*widthA + i] * inputB[i*widthB + col];
     }
-    sum+=inputC[row]
+    sum+=inputC[row];
 
     outputD[row*widthB + col] = sum;
 }
