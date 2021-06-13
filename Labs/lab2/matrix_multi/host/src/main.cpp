@@ -85,11 +85,7 @@ static float B[24] = {
 static float C[8] = {
   1.0f,  1.0f,  1.0f,  0.0f,
   1.0f,  1.0f,  1.0f,  0.0f};   
-
-
-static float D[8] = {
-  1.0f,  1.0f,  1.0f,  1.0f,
-  1.0f,  1.0f,  1.0f,  1.0f};   
+ 
 
 
 // declare matrix sizes
@@ -156,9 +152,9 @@ int main(int argc, char **argv) {
   cl_mem bufferD = clCreateBuffer(context, CL_MEM_WRITE_ONLY,
 	 wD*hD*sizeof(float), NULL, &ret);
 
-  // copy Matrix D to the device
-  clEnqueueWriteBuffer(queue, bufferD, CL_TRUE, 0,
-	wD*hD*sizeof(float),(void *)D, 0, NULL, NULL);
+  //// copy Matrix D to the device
+  //clEnqueueWriteBuffer(queue, bufferD, CL_TRUE, 0,
+//	wD*hD*sizeof(float),(void *)D, 0, NULL, NULL);
 
   // Set the kernel arguments 
   status = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&bufferD);
