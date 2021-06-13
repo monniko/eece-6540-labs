@@ -26,14 +26,16 @@ __kernel void simpleMultiply(
     int heightA,
     int widthB,
     int heightB,
-    int widthC,
-    int heightC,
-    int widthD,
-    int heightD,
     __global float *inputA,
     __global float *inputB,
     __global float *inputC)
 {
+    /* Sizes */
+  int widthC=widthB;
+  int heightC=heightA;
+  int widthD=widthC;
+  int heightD=heightC;
+
     /* get global position in Y direction */
     int row = get_global_id (1);
     /* get global position in X direction */

@@ -118,6 +118,7 @@ int main(int argc, char **argv) {
   float *D = (float *)calloc (hD * wD ,  sizeof(float));
   printf("\nGot to line 123, calloc float *D.\n");
   for (int i = 0; i < wD*hD; i++) {
+    D[i]=4;
     printf ("%f ", D[i]);
   }
   printf("\n");
@@ -149,7 +150,7 @@ int main(int argc, char **argv) {
 	   wC*hC*sizeof(float),(void *)C, 0, NULL, NULL);
 
   // allocate space for Matrix D on the device
-  cl_mem bufferD = clCreateBuffer(context, CL_MEM_WRITE_ONLY,
+  cl_mem bufferD = clCreateBuffer(context, CL_MEM_READ_WRITE,
 	 wD*hD*sizeof(float), NULL, &ret);
 
   //// copy Matrix D to the device
