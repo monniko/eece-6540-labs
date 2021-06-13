@@ -120,6 +120,7 @@ int main(int argc, char **argv) {
   }
 
   float *D = (float *)calloc (hD * wD ,  sizeof(float));
+  printf("\nGot to line 123, calloc float *D.\n");
   for (int i = 0; i < wD*hD; i++) {
     printf ("%f ", D[i]);
   }
@@ -173,7 +174,8 @@ int main(int argc, char **argv) {
   printf("\nKernel initialization is complete.\n");
   printf("Launching the kernel...\n\n");
 
-  // Configure work set over which the kernel will execute
+  // Configure work set over which the kernel
+  printf("\nGot to line 178, enqueue.\n");// will execute
   size_t globalws[2]={wD, hD};
   size_t localws[2] = {2, 2};
   // Execute the kernel 

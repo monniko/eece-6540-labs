@@ -26,6 +26,8 @@ __kernel void simpleMultiply(
     int heightA,
     int widthB,
     int heightB,
+    int widthC,
+    int heightC,
     int widthD,
     int heightD,
     __global float *inputA,
@@ -45,6 +47,6 @@ __kernel void simpleMultiply(
     }
     sum+=inputC[row];
 
-    outputD[row*widthB + col] = sum;
+    outputD[row*widthD + col] = sum;
 }
 
