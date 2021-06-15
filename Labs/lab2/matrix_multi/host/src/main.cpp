@@ -83,20 +83,9 @@ size_t hC = hA;
 size_t wD = wB;
 size_t hD = hA;
 
-
-float A[8] = {
-  1.0f,  1.0f,  1.0f,  1.0f,
-  1.0f,  1.0f,  1.0f,  1.0f};
-
-float B[24] = {
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
-float C[12] = {
-  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
-  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
-
+float A[1024];
+float B[1024];
+float C[1024];
 
 // Entry point.
 int main(int argc, char **argv) {
@@ -115,15 +104,15 @@ int main(int argc, char **argv) {
   hC=hA;
   wD=wB;
   hD=hA;
-float A[wA*hA];
+//float A[wA*hA];
 for (int i=0;i<wA*hA;i++) {
  A[i] = 1.0f;
-float B[hB*wB];
+//float B[hB*wB];
 for (int i=0; i<wB*hB; i++) {
  B[i]=2.0f;
 }
 
-float C[wC*hC];
+//float C[wC*hC];
  for (int i=0;i<wC*hC;i++) {
  C[i] = 3.0f;
 }
@@ -132,6 +121,19 @@ float C[wC*hC];
 
 } else {
  
+
+float A[8] = {
+  1.0f,  1.0f,  1.0f,  1.0f,
+  1.0f,  1.0f,  1.0f,  1.0f};
+
+float B[24] = {
+  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
+float C[12] = {
+  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
+  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
 
 
 }
@@ -228,7 +230,7 @@ float C[wC*hC];
   // Verify result 
   for (int i = 0; i < wD; i++) {
     for (int j=0; j<hD;j++){
-     printf("\nDebug.\n");
+//     printf("\nDebug.\n");
     printf ("%f ", D[i*wD+j]);
    } 
   printf("\n");
