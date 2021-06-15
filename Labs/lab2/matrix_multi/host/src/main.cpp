@@ -72,36 +72,70 @@ static void device_info_string( cl_device_id device, cl_device_info param, const
 static void display_device_info( cl_device_id device );
 
 // TODO: you will need to allocate memory dynamically for larger arrays
-static float A[8] = {
+
+// declare matrix sizes
+size_t wA=4;
+size_t hA=2;
+size_t wB=6;
+size_t hB=4;
+size_t wC = wB;
+size_t hC = hA;
+size_t wD = wB;
+size_t hD = hA;
+
+
+float A[8] = {
   1.0f,  1.0f,  1.0f,  1.0f,
   1.0f,  1.0f,  1.0f,  1.0f};
 
-static float B[24] = {
+float B[24] = {
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
   2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
-  
-static float C[12] = {
+float C[12] = {
   1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
   1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
- 
 
-
-// declare matrix sizes
-static size_t wA=4;
-static size_t hA=2;
-static size_t wB=6;
-static size_t hB=4;
-static size_t wC = wB;
-static size_t hC = hA;
-static size_t wD = wB;
-static size_t hD = hA;
 
 // Entry point.
 int main(int argc, char **argv) {
   Options options(argc, argv);
+  printf("\n Number of arguments: %d\n",argc);
+  if (argc==5) {
+  int m=atoi(argv[1]);
+  int n=atoi(argv[2]);
+  int p=atoi(argv[3]);
+ printf("A %d by %d, B %d by %d, D %d by %d\n",m,n,p,m,p,n);
+  wA=m;
+  hA=n;
+  wB=p;
+  hB=m;
+  wC=wB;
+  hC=hA;
+  wD=wB;
+  hD=hA;
+float A[wA*hA];
+for (int i=0;i<wA*hA;i++) {
+ A[i] = 1.0f;
+float B[hB*wB];
+for (int i=0; i<wB*hB; i++) {
+ B[i]=2.0f;
+}
 
+float C[wC*hC];
+ for (int i=0;i<wC*hC;i++) {
+ C[i] = 3.0f;
+}
+
+}  
+
+} else {
+ 
+
+
+}
+  printf("\nArguments: %s\n",argv[1]);
   int ret;
 
   // Optional argument to specify whether the emulator should be used.
@@ -119,7 +153,7 @@ int main(int argc, char **argv) {
   printf("\nGot to line 123, calloc float *D.\n");
   for (int i = 0; i < wD*hD; i++) {
     D[i]=4;
-    printf ("%f ", D[i]);
+//    printf("%f ", D[i]);
   }
   printf("\n");
 
@@ -172,7 +206,7 @@ int main(int argc, char **argv) {
   printf("Launching the kernel...\n\n");
 
   // Configure work set over which the kernel
-  printf("\nGot to line 178, enqueue.\n");// will execute
+  //printf("\nGot to line 178, enqueue.\n");// will execute
   size_t globalws[2]={wD, hD};
   size_t localws[2] = {2, 2};
   // Execute the kernel 
@@ -192,10 +226,14 @@ int main(int argc, char **argv) {
          (void *)D, 0, NULL, NULL);
 
   // Verify result 
-  for (int i = 0; i < wD*hD; i++) {
-    printf ("%f ", D[i]);
-  }
+  for (int i = 0; i < wD; i++) {
+    for (int j=0; j<hD;j++){
+     printf("\nDebug.\n");
+    printf ("%f ", D[i*wD+j]);
+   } 
   printf("\n");
+}
+printf("\n");
 
   // Free the resources allocated
   cleanup();
