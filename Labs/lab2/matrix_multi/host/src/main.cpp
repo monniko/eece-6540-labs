@@ -83,9 +83,20 @@ size_t hC = hA;
 size_t wD = wB;
 size_t hD = hA;
 
-float A[1024];
-float B[1024];
-float C[1024];
+//size_t max_size=1024*1024;
+float A[1000000];
+float B[1000000];
+float C[1000000];
+
+void print_matrix(float* matrixtoprint,int height, int width) {
+printf("\n");
+for (int i=0;i<height; i++) {
+for (int j=0; j<width; j++) {
+printf("%f ",matrixtoprint[i*height+j]);
+}
+printf("\n");
+}
+}
 
 // Entry point.
 int main(int argc, char **argv) {
@@ -102,11 +113,12 @@ int main(int argc, char **argv) {
   hB=m;
   wC=wB;
   hC=hA;
-  wD=wB;
-  hD=hA;
+  wD=wC;
+  hD=hC;
 //float A[wA*hA];
 for (int i=0;i<wA*hA;i++) {
  A[i] = 1.0f;
+}
 //float B[hB*wB];
 for (int i=0; i<wB*hB; i++) {
  B[i]=2.0f;
@@ -115,28 +127,45 @@ for (int i=0; i<wB*hB; i++) {
 //float C[wC*hC];
  for (int i=0;i<wC*hC;i++) {
  C[i] = 3.0f;
-}
-
-}  
+} 
 
 } else {
- 
 
-float A[8] = {
-  1.0f,  1.0f,  1.0f,  1.0f,
-  1.0f,  1.0f,  1.0f,  1.0f};
+printf("Using default matrix dimensions and values."); 
 
-float B[24] = {
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
-  2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
-float C[12] = {
-  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
-  1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
+wA=4;
+hA=2;
+wB=6;
+hB=4;
+wC=6;
+hC=2;
 
-
+for (int i=0;i<wA*hA;i++){
+A[i]=1.0f;
 }
+print_matrix(A,hA,wA);
+
+//float A[8] = {
+ // 1.0f,  1.0f,  1.0f,  1.0f,
+ // 1.0f,  1.0f,  1.0f,  1.0f};
+
+for (int i=0; i<wB*hB; i++){
+B[i]=2.0f;
+}
+//float B[24] = {
+ // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+ // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+ // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
+ // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f};
+for (int i=0; i<wC*hC; i++){
+C[i]=1.0f;
+}
+//float C[12] = {
+ // 1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
+ // 1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
+
+
+} // End of matrix initialization
   printf("\nArguments: %s\n",argv[1]);
   int ret;
 
@@ -152,12 +181,28 @@ float C[12] = {
   }
 
   float *D = (float *)calloc (hD * wD ,  sizeof(float));
-  printf("\nGot to line 123, calloc float *D.\n");
+  //printf("\nGot to line 123, calloc float *D.\n");
+  // Initialize D, not that I anticipate a problem.
   for (int i = 0; i < wD*hD; i++) {
     D[i]=4;
 //    printf("%f ", D[i]);
   }
   printf("\n");
+
+if (wA*hA<100) {
+printf("Matrix A:");
+print_matrix(A,hA,wA);
+}
+
+if (wB*hB<100) {
+printf("Matrix B:");
+print_matrix(B, hB, wB);
+}
+
+if (wC*hC<100) {
+printf("Matrix C:\n");
+print_matrix(C,hC,wC);
+}
 
   // In this example, we assume A, B, C are float arrays which
   // have been declared and initialized
@@ -227,14 +272,15 @@ float C[12] = {
   clEnqueueReadBuffer(queue, bufferD, CL_TRUE, 0, wD*hD*sizeof(float),
          (void *)D, 0, NULL, NULL);
 
+
   // Verify result 
-  for (int i = 0; i < wD; i++) {
-    for (int j=0; j<hD;j++){
-//     printf("\nDebug.\n");
-    printf ("%f ", D[i*wD+j]);
-   } 
-  printf("\n");
-}
+
+  for (int i = 0; i < wD; i++) { // The whole first row
+    for (int j=0; j<1;j++){ // only the first row
+      printf ("%f ", D[i*wD+j]);
+     } 
+    //printf("\n"); 
+  }
 printf("\n");
 
   // Free the resources allocated
