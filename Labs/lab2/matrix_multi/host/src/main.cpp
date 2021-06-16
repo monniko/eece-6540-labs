@@ -120,7 +120,7 @@ for (int i=0;i<wA*hA;i++) {
  A[i] = 1.0f;
 }
 //float B[hB*wB];
-for (int i=0; i<wB*hB; i++) {
+for (int i=0; i<wB*hB*4; i++) {
  B[i]=2.0f;
 }
 
@@ -149,7 +149,7 @@ print_matrix(A,hA,wA);
  // 1.0f,  1.0f,  1.0f,  1.0f,
  // 1.0f,  1.0f,  1.0f,  1.0f};
 
-for (int i=0; i<wB*hB; i++){
+for (int i=0; i<wB*hB*4; i++){
 B[i]=2.0f;
 }
 //float B[24] = {
