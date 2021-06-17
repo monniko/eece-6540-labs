@@ -92,7 +92,7 @@ void print_matrix(float* matrixtoprint,int height, int width) {
 printf("\n");
 for (int i=0;i<height; i++) {
 for (int j=0; j<width; j++) {
-printf("%f ",matrixtoprint[i*height+j]);
+printf("%f ",matrixtoprint[j*height+i]);
 }
 printf("\n");
 }
@@ -116,11 +116,13 @@ int main(int argc, char **argv) {
   wD=wC;
   hD=hC;
 //float A[wA*hA];
+//float *A = (float *)calloc (hA * wA ,  sizeof(float));
+
 for (int i=0;i<wA*hA;i++) {
  A[i] = 1.0f;
 }
 //float B[hB*wB];
-for (int i=0; i<wB*hB*4; i++) {
+for (int i=0; i<wB*hB; i++) {
  B[i]=2.0f;
 }
 
@@ -143,7 +145,7 @@ hC=2;
 for (int i=0;i<wA*hA;i++){
 A[i]=1.0f;
 }
-print_matrix(A,hA,wA);
+
 
 //float A[8] = {
  // 1.0f,  1.0f,  1.0f,  1.0f,
@@ -152,6 +154,7 @@ print_matrix(A,hA,wA);
 for (int i=0; i<wB*hB*4; i++){
 B[i]=2.0f;
 }
+
 //float B[24] = {
  // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
  // 2.0f,  2.0f,  2.0f,  2.0f, 2.0f, 2.0f,
@@ -160,6 +163,7 @@ B[i]=2.0f;
 for (int i=0; i<wC*hC; i++){
 C[i]=1.0f;
 }
+
 //float C[12] = {
  // 1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f,
  // 1.0f,  1.0f,  1.0f,  0.0f, 2.0f,1.0f};   
@@ -255,7 +259,7 @@ print_matrix(C,hC,wC);
   // Configure work set over which the kernel
   //printf("\nGot to line 178, enqueue.\n");// will execute
   size_t globalws[2]={wD, hD};
-  size_t localws[2] = {2, 2};
+  size_t localws[2] = {4,4};  //changing this to four out of curiosity
   // Execute the kernel 
   status = clEnqueueNDRangeKernel(queue, kernel, 2, NULL,
       globalws, localws, 0, NULL, NULL);
@@ -275,13 +279,14 @@ print_matrix(C,hC,wC);
 
   // Verify result 
 
-  for (int i = 0; i < wD; i++) { // The whole first row
-    for (int j=0; j<1;j++){ // only the first row
-      printf ("%f ", D[i*wD+j]);
-     } 
-    //printf("\n"); 
-  }
-printf("\n");
+ print_matrix(D,hD,wD);
+//  for (int i = 0; i < wD; i++) { // The whole first row
+//    for (int j=0; j<hD;j++){ // only the first row
+//      printf ("%f ", D[i*wD+j]);
+//     } 
+//    printf("\n"); 
+//  }
+//printf("\n");
 
   // Free the resources allocated
   cleanup();
